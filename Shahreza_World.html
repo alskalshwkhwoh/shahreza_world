@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shahreza World — Gamer Intelektual</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #000000;
+    --deep: #050508;
+    --void: #0a0a12;
+    --purple-dark: #1a0a2e;
+    --purple: #6b21a8;
+    --purple-mid: #9333ea;
+    --purple-bright: #c084fc;
+    --red: #dc2626;
+    --red-bright: #ef4444;
+    --red-glow: #ff2222;
+    --glass-bg: rgba(15, 5, 30, 0.55);
+    --glass-border: rgba(147, 51, 234, 0.3);
+    --text-primary: #f5f0ff;
+    --text-muted: #a78bca;
+    --text-dim: #5c4a7a;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text-primary);
+    font-family: 'Rajdhani', sans-serif;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor-dot {
+    position: fixed;
+    width: 8px; height: 8px;
+    background: var(--red-bright);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.1s;
+    top: 0; left: 0;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 32px; height: 32px;
+    border: 1.5px solid var(--purple-mid);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.15s ease;
+    top: 0; left: 0;
+  }
+
+  /* BACKGROUND */
+  .bg-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .bg-layer::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(107,33,168,0.18) 0%, transparent 70%);
+    top: -100px; left: -100px;
+    animation: pulse-bg 8s ease-in-out infinite;
+  }
+  .bg-layer::after {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(220,38,38,0.12) 0%, transparent 70%);
+    bottom: -100px; right: -100px;
+    animation: pulse-bg 10s ease-in-out infinite reverse;
+  }
+  @keyframes pulse-bg {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.2); opacity: 1; }
+  }
+
+  /* GRID LINES */
+  .grid-lines {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background-image:
+      linear-gradient(rgba(107,33,168,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(107,33,168,0.05) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+  }
+
+  /* SCANLINES */
+  .scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.08) 2px,
+      rgba(0,0,0,0.08) 4px
+    );
+    pointer-events: none;
+  }
+
+  /* WRAPPER */
+  .wrapper {
+    position: relative;
+    z-index: 2;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.2rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+  }
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 3px;
+    background: linear-gradient(135deg, var(--purple-bright), var(--red-bright));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 600;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -4px; left: 0; right: 0;
+    height: 1px;
+    background: var(--red-bright);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+  .nav-links a:hover { color: var(--text-primary); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg-circle {
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    border: 1px solid rgba(107,33,168,0.15);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation: rotate-slow 30s linear infinite;
+  }
+  .hero-bg-circle::before {
+    content: '';
+    position: absolute;
+    width: 500px; height: 500px;
+    border-radius: 50%;
+    border: 1px solid rgba(220,38,38,0.1);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  @keyframes rotate-slow {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+  }
+
+  .hero-content {
+    max-width: 800px;
+    opacity: 0;
+    transform: translateY(40px);
+    animation: hero-reveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+  }
+  @keyframes hero-reveal {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    border: 1px solid rgba(220,38,38,0.4);
+    padding: 0.3rem 1rem;
+    margin-bottom: 1.5rem;
+    font-family: 'Space Mono', monospace;
+    opacity: 0;
+    animation: fade-up 0.8s ease 0.8s forwards;
+  }
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(4.5rem, 10vw, 9rem);
+    line-height: 0.9;
+    letter-spacing: 4px;
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fade-up 0.8s ease 1s forwards;
+  }
+  .hero-name .line-1 {
+    display: block;
+    color: var(--text-primary);
+  }
+  .hero-name .line-2 {
+    display: block;
+    background: linear-gradient(135deg, var(--purple-bright) 0%, var(--red-bright) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-title {
+    font-size: 1.1rem;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    font-weight: 400;
+    opacity: 0;
+    animation: fade-up 0.8s ease 1.2s forwards;
+  }
+
+  .hero-desc {
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+    max-width: 580px;
+    margin-bottom: 3rem;
+    font-weight: 300;
+    opacity: 0;
+    animation: fade-up 0.8s ease 1.4s forwards;
+  }
+
+  .hero-cta-group {
+    display: flex;
+    gap: 1.2rem;
+    align-items: center;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fade-up 0.8s ease 1.6s forwards;
+  }
+
+  .btn-primary {
+    padding: 0.85rem 2.5rem;
+    background: linear-gradient(135deg, var(--purple), var(--red));
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: none;
+    cursor: none;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-decoration: none;
+  }
+  .btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(147,51,234,0.5), 0 4px 15px rgba(220,38,38,0.3);
+  }
+
+  .btn-ghost {
+    padding: 0.85rem 2.5rem;
+    background: transparent;
+    color: var(--purple-bright);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: 1px solid rgba(147,51,234,0.5);
+    cursor: none;
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+  .btn-ghost:hover {
+    background: rgba(147,51,234,0.1);
+    border-color: var(--purple-bright);
+    color: #fff;
+  }
+
+  /* STATUS BADGES */
+  .hero-stats {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    opacity: 0;
+    animation: fade-up 0.8s ease 2s forwards;
+  }
+  .stat-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--glass-border);
+    padding: 1rem 1.5rem;
+    text-align: right;
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 8px 100%);
+  }
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--purple-bright), var(--red-bright));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-label {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* GLASS SECTION */
+  .glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px) saturate(200%);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    padding: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .glass-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--purple-mid), transparent);
+  }
+  .glass-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(220,38,38,0.4), transparent);
+  }
+
+  /* SECTION HEADERS */
+  .section-header {
+    margin-bottom: 4rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .section-header.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .section-eyebrow {
+    font-size: 0.7rem;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--red-bright);
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 0.5rem;
+  }
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    letter-spacing: 3px;
+    line-height: 1;
+    color: var(--text-primary);
+  }
+  .section-title span {
+    background: linear-gradient(135deg, var(--purple-bright), var(--red-bright));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .section-line {
+    width: 60px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--red), var(--purple));
+    margin-top: 1rem;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 7rem 0;
+  }
+
+  /* GAME HISTORY */
+  #games { background: linear-gradient(180deg, transparent, rgba(107,33,168,0.03), transparent); }
+  .games-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.2rem;
+  }
+  .game-card {
+    position: relative;
+    background: rgba(10,0,20,0.8);
+    border: 1px solid rgba(107,33,168,0.2);
+    padding: 1.8rem 1.4rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+    cursor: none;
+    opacity: 0;
+    transform: translateY(30px);
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
+  }
+  .game-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .game-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(107,33,168,0.15), rgba(220,38,38,0.1));
+    opacity: 0;
+    transition: opacity 0.4s;
+  }
+  .game-card:hover::before { opacity: 1; }
+  .game-card:hover {
+    border-color: rgba(147,51,234,0.6);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(107,33,168,0.3), 0 10px 30px rgba(220,38,38,0.15);
+  }
+  .game-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    display: block;
+    filter: grayscale(30%);
+    transition: filter 0.3s;
+  }
+  .game-card:hover .game-icon { filter: grayscale(0%); }
+  .game-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 2px;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+  }
+  .game-tag {
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-family: 'Space Mono', monospace;
+  }
+  .game-badge {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: linear-gradient(135deg, var(--purple), var(--red));
+    color: white;
+    font-size: 0.5rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 6px;
+    font-family: 'Space Mono', monospace;
+  }
+
+  /* PROSES SECTION */
+  #proses { background: linear-gradient(180deg, transparent, rgba(220,38,38,0.02), transparent); }
+  .proses-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+  .proses-item {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    padding: 1.8rem;
+    background: rgba(5,0,15,0.7);
+    border: 1px solid rgba(107,33,168,0.15);
+    border-left: 3px solid transparent;
+    transition: all 0.4s;
+    opacity: 0;
+    transform: translateX(-20px);
+    position: relative;
+    overflow: hidden;
+  }
+  .proses-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .proses-item:hover {
+    border-left-color: var(--red-bright);
+    background: rgba(10,0,25,0.9);
+    box-shadow: 4px 0 30px rgba(220,38,38,0.1), inset 0 0 30px rgba(107,33,168,0.05);
+  }
+  .proses-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    line-height: 1;
+    background: linear-gradient(180deg, rgba(147,51,234,0.6), rgba(220,38,38,0.3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    min-width: 60px;
+  }
+  .proses-content h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.4rem;
+    letter-spacing: 2px;
+    color: var(--text-primary);
+    margin-bottom: 0.4rem;
+  }
+  .proses-content p {
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    font-weight: 300;
+  }
+  .proses-icon-bg {
+    position: absolute;
+    top: 0; right: 0;
+    font-size: 5rem;
+    opacity: 0.04;
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  /* WHAT I DO */
+  #whatido { background: var(--void); }
+  .whatido-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  .service-card {
+    padding: 2.5rem 2rem;
+    background: rgba(5,0,15,0.6);
+    border: 1px solid rgba(107,33,168,0.2);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0;
+    transform: scale(0.95);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%);
+    cursor: none;
+  }
+  .service-card.visible {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(107,33,168,0.1) 0%, rgba(220,38,38,0.08) 100%);
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .service-card:hover { transform: scale(1.02) translateY(-5px); border-color: rgba(147,51,234,0.5); }
+  .service-card:hover::before { opacity: 1; }
+  .service-card:hover .service-num { opacity: 1; }
+  .service-icon { font-size: 2.5rem; margin-bottom: 1.5rem; display: block; }
+  .service-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 3px;
+    color: var(--text-primary);
+    margin-bottom: 0.8rem;
+  }
+  .service-title span {
+    background: linear-gradient(135deg, var(--purple-bright), var(--red-bright));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .service-desc {
+    font-size: 0.9rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+  .service-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .service-tag {
+    font-size: 0.6rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--purple-bright);
+    border: 1px solid rgba(192,132,252,0.3);
+    padding: 3px 8px;
+    font-family: 'Space Mono', monospace;
+  }
+  .service-num {
+    position: absolute;
+    bottom: 1rem; right: 1.2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem;
+    color: rgba(107,33,168,0.08);
+    line-height: 1;
+    opacity: 0.5;
+    transition: opacity 0.4s;
+  }
+
+  /* QUOTE SECTION */
+  #quote {
+    padding: 5rem 0;
+    text-align: center;
+    position: relative;
+  }
+  .quote-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    letter-spacing: 4px;
+    line-height: 1.2;
+    color: rgba(245,240,255,0.15);
+    position: relative;
+  }
+  .quote-text .highlight {
+    background: linear-gradient(135deg, var(--purple-bright), var(--red-bright));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .quote-line {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--purple), var(--red), transparent);
+    margin: 2rem 0;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 3rem 0;
+    border-top: 1px solid rgba(107,33,168,0.2);
+    text-align: center;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    letter-spacing: 6px;
+    background: linear-gradient(135deg, var(--purple-bright), var(--red-bright));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    display: block;
+    margin-bottom: 1rem;
+  }
+  .footer-sub {
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    font-family: 'Space Mono', monospace;
+  }
+  .footer-divider {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(180deg, var(--purple), transparent);
+    margin: 2rem auto;
+  }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* FLOATING PARTICLES */
+  .particles {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .particle {
+    position: absolute;
+    width: 2px; height: 2px;
+    border-radius: 50%;
+    background: var(--purple-mid);
+    animation: float-particle linear infinite;
+    opacity: 0;
+  }
+  @keyframes float-particle {
+    0% { opacity: 0; transform: translateY(100vh) translateX(0); }
+    10% { opacity: 0.6; }
+    90% { opacity: 0.6; }
+    100% { opacity: 0; transform: translateY(-100px) translateX(50px); }
+  }
+
+  /* GLOW LINE */
+  .glow-line {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--purple-mid), var(--red), transparent);
+    margin: 4rem 0;
+    position: relative;
+  }
+  .glow-line::before {
+    content: '';
+    position: absolute;
+    top: -2px; left: 10%; right: 10%;
+    height: 5px;
+    background: linear-gradient(90deg, transparent, rgba(147,51,234,0.3), rgba(220,38,38,0.2), transparent);
+    filter: blur(4px);
+  }
+
+  @media (max-width: 768px) {
+    .hero-stats { display: none; }
+    nav { padding: 1rem; }
+    .nav-links { gap: 1.2rem; }
+    .hero-cta-group { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- BG EFFECTS -->
+<div class="bg-layer"></div>
+<div class="grid-lines"></div>
+<div class="scanlines"></div>
+<div class="particles" id="particles"></div>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">SHZ.WORLD</span>
+  <ul class="nav-links">
+    <li><a href="#games">Games</a></li>
+    <li><a href="#proses">Proses</a></li>
+    <li><a href="#whatido">Keahlian</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrapper">
+    <div class="hero-content">
+      <div class="hero-tag">// Status: Online — Competitive Mode</div>
+      <h1 class="hero-name">
+        <span class="line-1">Shahreza</span>
+        <span class="line-2">World</span>
+      </h1>
+      <p class="hero-title">Gamer Intelektual &nbsp;·&nbsp; Kreator Digital</p>
+      <p class="hero-desc">
+        Bukan sekadar pemain — ini soal memahami sistem, membaca situasi, dan mengeksekusi keputusan dengan presisi. Adaptasi bukan pilihan, itu adalah gaya hidup.
+      </p>
+      <div class="hero-cta-group">
+        <a href="#games" class="btn-primary">Lihat Histori Game</a>
+        <a href="#whatido" class="btn-ghost">Apa yang Gue Lakukan</a>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-number">7+</div>
+        <div class="stat-label">Game Dikuasai</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Adaptasi Rate</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">∞</div>
+        <div class="stat-label">Jam Terbang</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-bg-circle"></div>
+</section>
+
+<!-- GAME HISTORY -->
+<section id="games">
+  <div class="wrapper">
+    <div class="section-header">
+      <p class="section-eyebrow">// Battle Record</p>
+      <h2 class="section-title">Histori <span>Game</span></h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="games-grid">
+      <div class="game-card">
+        <div class="game-badge">Mobile</div>
+        <span class="game-icon">🔫</span>
+        <div class="game-name">PUBG</div>
+        <div class="game-tag">Battle Royale</div>
+      </div>
+      <div class="game-card">
+        <div class="game-badge">Mobile</div>
+        <span class="game-icon">🔥</span>
+        <div class="game-name">Free Fire</div>
+        <div class="game-tag">Battle Royale</div>
+      </div>
+      <div class="game-card">
+        <div class="game-badge">MOBA</div>
+        <span class="game-icon">⚔️</span>
+        <div class="game-name">Mobile Legends</div>
+        <div class="game-tag">5v5 MOBA</div>
+      </div>
+      <div class="game-card">
+        <div class="game-badge">RPG</div>
+        <span class="game-icon">🌙</span>
+        <div class="game-name">Genshin Impact</div>
+        <div class="game-tag">Open World RPG</div>
+      </div>
+      <div class="game-card">
+        <div class="game-badge">Tactical</div>
+        <span class="game-icon">🎯</span>
+        <div class="game-name">Valorant</div>
+        <div class="game-tag">Tactical Shooter</div>
+      </div>
+      <div class="game-card">
+        <div class="game-badge">BR/FPS</div>
+        <span class="game-icon">🦅</span>
+        <div class="game-name">Apex Legends</div>
+        <div class="game-tag">Battle Royale</div>
+      </div>
+      <div class="game-card">
+        <div class="game-badge">FPS</div>
+        <span class="game-icon">💣</span>
+        <div class="game-name">Counter-Strike 2</div>
+        <div class="game-tag">Tactical FPS</div>
+      </div>
+    </div>
+    <div class="glow-line"></div>
+  </div>
+</section>
+
+<!-- PROSES JAGO -->
+<section id="proses">
+  <div class="wrapper">
+    <div class="section-header">
+      <p class="section-eyebrow">// Metodologi</p>
+      <h2 class="section-title">Proses Menjadi <span>Jago</span></h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="proses-list">
+
+      <div class="proses-item">
+        <div class="proses-number">01</div>
+        <div class="proses-content">
+          <h3>Mulai dengan Adil</h3>
+          <p>Tidak ada cheat, tidak ada exploit yang merusak pengalaman. Integritas dalam bermain adalah fondasi dari setiap progress yang nyata. Kemenangan tanpa keadilan tidak bernilai apa-apa.</p>
+        </div>
+        <div class="proses-icon-bg">⚖️</div>
+      </div>
+
+      <div class="proses-item">
+        <div class="proses-number">02</div>
+        <div class="proses-content">
+          <h3>Competitive Mindset</h3>
+          <p>Setiap match adalah ujian. Setiap kekalahan adalah data. Pendekatan kompetitif berarti selalu mencari cara untuk meningkatkan diri, bukan mencari kambing hitam.</p>
+        </div>
+        <div class="proses-icon-bg">🏆</div>
+      </div>
+
+      <div class="proses-item">
+        <div class="proses-number">03</div>
+        <div class="proses-content">
+          <h3>Turunkan Ego</h3>
+          <p>Ego adalah musuh terbesar di ranked. Mau belajar dari siapapun — bahkan dari pemain yang rank-nya lebih rendah. Kerendahan hati adalah akselerator pertumbuhan paling kuat.</p>
+        </div>
+        <div class="proses-icon-bg">🧠</div>
+      </div>
+
+      <div class="proses-item">
+        <div class="proses-number">04</div>
+        <div class="proses-content">
+          <h3>Komunikasi</h3>
+          <p>Game team-based dimenangkan dengan informasi. Shot call yang tepat, ping yang akurat, callout yang jelas — komunikasi adalah difference-maker antara tim yang kalah dan yang menang.</p>
+        </div>
+        <div class="proses-icon-bg">🎙️</div>
+      </div>
+
+      <div class="proses-item">
+        <div class="proses-number">05</div>
+        <div class="proses-content">
+          <h3>Adaptasi Cepat</h3>
+          <p>Meta berubah, patch datang, musuh punya strategi baru. Kemampuan membaca situasi dan mengubah playstyle mid-game adalah skill yang membedakan pemain biasa dari pemain elite.</p>
+        </div>
+        <div class="proses-icon-bg">⚡</div>
+      </div>
+
+      <div class="proses-item">
+        <div class="proses-number">06</div>
+        <div class="proses-content">
+          <h3>VOD Review & Analisis</h3>
+          <p>Replay adalah cermin kejujuran. Tonton ulang kesalahan sendiri, identifikasi pola buruk, analisis keputusan yang salah. Pemain yang tidak mau menonton replay-nya sendiri tidak akan pernah berkembang.</p>
+        </div>
+        <div class="proses-icon-bg">📹</div>
+      </div>
+
+      <div class="proses-item">
+        <div class="proses-number">07</div>
+        <div class="proses-content">
+          <h3>Kontrol Emosi & Tilt</h3>
+          <p>Tilt adalah virus yang membunuh winrate. Menjaga kepala tetap dingin setelah loss streak, istirahat saat performa menurun, dan tidak membawa emosi dari match sebelumnya — ini adalah mental game yang sesungguhnya.</p>
+        </div>
+        <div class="proses-icon-bg">🧊</div>
+      </div>
+
+      <div class="proses-item">
+        <div class="proses-number">08</div>
+        <div class="proses-content">
+          <h3>Penguasaan Mekanik Dasar</h3>
+          <p>Aim, movement, positioning, resource management — semua genre punya fundamental yang berbeda. Drill mekanikal dasar sampai menjadi otomatis, baru fokus ke strategi level tinggi.</p>
+        </div>
+        <div class="proses-icon-bg">🎮</div>
+      </div>
+
+      <div class="proses-item">
+        <div class="proses-number">09</div>
+        <div class="proses-content">
+          <h3>Pelajari Meta & Game Theory</h3>
+          <p>Kenali tier list, pahami kenapa sesuatu kuat di patch ini, pelajari economy, rotasi, dan decision tree. Bermain dengan otak, bukan hanya dengan refleks.</p>
+        </div>
+        <div class="proses-icon-bg">📊</div>
+      </div>
+
+      <div class="proses-item">
+        <div class="proses-number">10</div>
+        <div class="proses-content">
+          <h3>Konsistensi, Bukan Intensitas</h3>
+          <p>Main 2 jam fokus setiap hari lebih efektif dari marathon 10 jam penuh tilt. Konsistensi membangun otot memori, menjaga kondisi mental, dan menciptakan progress yang sustainable jangka panjang.</p>
+        </div>
+        <div class="proses-icon-bg">🔄</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<section id="quote">
+  <div class="wrapper">
+    <div class="quote-line"></div>
+    <p class="quote-text reveal">
+      "BUKAN SOAL BERAPA SERING KAU MENANG —<br>
+      TAPI <span class="highlight">BERAPA CEPAT KAU BANGKIT</span><br>
+      DAN LEBIH CERDAS DARI SEBELUMNYA"
+    </p>
+    <div class="quote-line"></div>
+  </div>
+</section>
+
+<!-- WHAT I DO -->
+<section id="whatido">
+  <div class="wrapper">
+    <div class="section-header">
+      <p class="section-eyebrow">// Layanan & Keahlian</p>
+      <h2 class="section-title">What <span>I Do</span></h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="whatido-grid">
+
+      <div class="service-card">
+        <span class="service-icon">🎬</span>
+        <h3 class="service-title"><span>Video</span> Editor</h3>
+        <p class="service-desc">
+          Dari raw footage ke karya yang nempel di kepala penonton. Spesialisasi di gaming content, highlight montage, dan storytelling visual yang punya ritme dan energi. Setiap cut adalah keputusan.
+        </p>
+        <div class="service-tags">
+          <span class="service-tag">Premiere</span>
+          <span class="service-tag">After Effects</span>
+          <span class="service-tag">Motion</span>
+          <span class="service-tag">Color Grading</span>
+        </div>
+        <div class="service-num">01</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">🤖</span>
+        <h3 class="service-title"><span>AI</span> Imagery</h3>
+        <p class="service-desc">
+          Mengolah prompt menjadi visual yang tidak akan pernah terbayangkan secara konvensional. Dari thumbnail gaming epik hingga konsep karya digital — memanfaatkan AI sebagai alat eksplorasi kreatif tanpa batas.
+        </p>
+        <div class="service-tags">
+          <span class="service-tag">Midjourney</span>
+          <span class="service-tag">ComfyUI</span>
+          <span class="service-tag">Prompt Craft</span>
+          <span class="service-tag">Upscaling</span>
+        </div>
+        <div class="service-num">02</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">🎮</span>
+        <h3 class="service-title"><span>Pro</span> Gamer</h3>
+        <p class="service-desc">
+          Berpengalaman lintas genre — dari MOBA, Battle Royale, hingga Tactical FPS dan Open World. Kemampuan adaptasi cepat ke meta baru, pembacaan situasi tingkat tinggi, dan mindset kompetitif yang terbentuk dari ribuan jam bermain.
+        </p>
+        <div class="service-tags">
+          <span class="service-tag">Multi-Genre</span>
+          <span class="service-tag">Coaching</span>
+          <span class="service-tag">Strategy</span>
+          <span class="service-tag">Competitive</span>
+        </div>
+        <div class="service-num">03</div>
+      </div>
+
+      <div class="service-card">
+        <span class="service-icon">⚙️</span>
+        <h3 class="service-title"><span>Modern</span> Tech</h3>
+        <p class="service-desc">
+          Tidak ketinggalan dari perkembangan teknologi terkini. Memahami ekosistem AI tools, workflow otomasi, dan bagaimana mengintegrasikan teknologi modern ke dalam produktivitas sehari-hari. Teknologi adalah alat — yang menentukan adalah siapa yang menggunakannya.
+        </p>
+        <div class="service-tags">
+          <span class="service-tag">AI Tools</span>
+          <span class="service-tag">Automation</span>
+          <span class="service-tag">Tech Stack</span>
+          <span class="service-tag">Workflow</span>
+        </div>
+        <div class="service-num">04</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrapper">
+    <div class="footer-divider"></div>
+    <span class="footer-logo">SHAHREZA WORLD</span>
+    <p class="footer-sub">Gamer Intelektual — Kreator Digital — Modern Technologist</p>
+    <div class="footer-divider"></div>
+    <p style="font-size:0.65rem; letter-spacing:2px; color:var(--text-dim); font-family:'Space Mono',monospace; margin-top:1rem;">
+      © 2025 SHAHREZA WORLD · ALL RIGHTS RESERVED
+    </p>
+  </div>
+</footer>
+
+<script>
+  // CURSOR
+  const dot = document.getElementById('cursorDot');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+  });
+  function animateCursor() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.transform = `translate(${rx - 16}px, ${ry - 16}px)`;
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+
+  document.querySelectorAll('a, button, .game-card, .service-card, .proses-item').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.transform += ' scale(1.5)';
+      ring.style.borderColor = 'rgba(220,38,38,0.8)';
+      dot.style.transform += ' scale(2)';
+      dot.style.background = 'var(--purple-bright)';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.borderColor = 'rgba(147,51,234,0.6)';
+      dot.style.background = 'var(--red-bright)';
+    });
+  });
+
+  // PARTICLES
+  const pc = document.getElementById('particles');
+  for(let i = 0; i < 30; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const x = Math.random() * 100;
+    const dur = 8 + Math.random() * 15;
+    const delay = Math.random() * 15;
+    const size = Math.random() > 0.7 ? 3 : 2;
+    const color = Math.random() > 0.5 ? 'var(--purple-mid)' : 'var(--red)';
+    p.style.cssText = `left:${x}%;animation-duration:${dur}s;animation-delay:${delay}s;width:${size}px;height:${size}px;background:${color};`;
+    pc.appendChild(p);
+  }
+
+  // SCROLL REVEAL
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.section-header, .game-card, .proses-item, .service-card, .reveal').forEach((el, i) => {
+    if(el.classList.contains('game-card') || el.classList.contains('proses-item') || el.classList.contains('service-card')) {
+      el.style.transitionDelay = `${(i % 7) * 0.08}s`;
+    }
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
